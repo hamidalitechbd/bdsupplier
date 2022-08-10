@@ -1,0 +1,2 @@
+[30-Oct-2016 23:14:41 America/Chicago] PHP Catchable fatal error:  Object of class PHPMailer could not be converted to string in /home4/salman82/public_html/uat1/PHPMailer/test_mail.php on line 25
+[03-Nov-2016 00:45:26 America/Chicago] PHP Warning:  file_get_contents(contents.html): failed to open stream: No such file or directory in /home4/salman82/public_html/uat1/PHPMailer/signed-mail.php on line 63

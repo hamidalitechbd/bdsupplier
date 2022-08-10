@@ -1,0 +1,147 @@
+[28-Apr-2022 02:59:04 America/Chicago] PHP Warning:  include(../incudes/conn.php): failed to open stream: No such file or directory in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 6
+[28-Apr-2022 02:59:04 America/Chicago] PHP Warning:  include(../incudes/conn.php): failed to open stream: No such file or directory in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 6
+[28-Apr-2022 02:59:04 America/Chicago] PHP Warning:  include(): Failed opening '../incudes/conn.php' for inclusion (include_path='.:/opt/cpanel/ea-php73/root/usr/share/pear') in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 6
+[28-Apr-2022 02:59:04 America/Chicago] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 7
+[28-Apr-2022 02:59:04 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, null given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 14
+[28-Apr-2022 03:02:14 America/Chicago] PHP Warning:  include(../incudes/conn.php): failed to open stream: No such file or directory in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 6
+[28-Apr-2022 03:02:14 America/Chicago] PHP Warning:  include(../incudes/conn.php): failed to open stream: No such file or directory in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 6
+[28-Apr-2022 03:02:14 America/Chicago] PHP Warning:  include(): Failed opening '../incudes/conn.php' for inclusion (include_path='.:/opt/cpanel/ea-php73/root/usr/share/pear') in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 6
+[28-Apr-2022 03:02:14 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home2/salman2152/jafree.kabelae.com/webapi/api.php:14
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 14
+[28-Apr-2022 03:02:21 America/Chicago] PHP Warning:  include(../incudes/conn.php): failed to open stream: No such file or directory in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 6
+[28-Apr-2022 03:02:21 America/Chicago] PHP Warning:  include(../incudes/conn.php): failed to open stream: No such file or directory in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 6
+[28-Apr-2022 03:02:21 America/Chicago] PHP Warning:  include(): Failed opening '../incudes/conn.php' for inclusion (include_path='.:/opt/cpanel/ea-php73/root/usr/share/pear') in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 6
+[28-Apr-2022 03:02:21 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home2/salman2152/jafree.kabelae.com/webapi/api.php:14
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 14
+[28-Apr-2022 03:02:54 America/Chicago] PHP Warning:  include(../incudes/conn.php): failed to open stream: No such file or directory in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 6
+[28-Apr-2022 03:02:54 America/Chicago] PHP Warning:  include(../incudes/conn.php): failed to open stream: No such file or directory in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 6
+[28-Apr-2022 03:02:54 America/Chicago] PHP Warning:  include(): Failed opening '../incudes/conn.php' for inclusion (include_path='.:/opt/cpanel/ea-php73/root/usr/share/pear') in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 6
+[28-Apr-2022 03:02:54 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home2/salman2152/jafree.kabelae.com/webapi/api.php:15
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 15
+[28-Apr-2022 03:03:20 America/Chicago] PHP Warning:  include(../incudes/conn.php): failed to open stream: No such file or directory in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 6
+[28-Apr-2022 03:03:20 America/Chicago] PHP Warning:  include(../incudes/conn.php): failed to open stream: No such file or directory in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 6
+[28-Apr-2022 03:03:20 America/Chicago] PHP Warning:  include(): Failed opening '../incudes/conn.php' for inclusion (include_path='.:/opt/cpanel/ea-php73/root/usr/share/pear') in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 6
+[28-Apr-2022 03:03:20 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home2/salman2152/jafree.kabelae.com/webapi/api.php:14
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 14
+[28-Apr-2022 03:03:22 America/Chicago] PHP Warning:  include(../incudes/conn.php): failed to open stream: No such file or directory in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 6
+[28-Apr-2022 03:03:22 America/Chicago] PHP Warning:  include(../incudes/conn.php): failed to open stream: No such file or directory in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 6
+[28-Apr-2022 03:03:22 America/Chicago] PHP Warning:  include(): Failed opening '../incudes/conn.php' for inclusion (include_path='.:/opt/cpanel/ea-php73/root/usr/share/pear') in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 6
+[28-Apr-2022 03:03:22 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home2/salman2152/jafree.kabelae.com/webapi/api.php:14
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 14
+[28-Apr-2022 03:04:41 America/Chicago] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home2/salman2152/jafree.kabelae.com/webapi/api.php:20
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 20
+[28-Apr-2022 03:04:51 America/Chicago] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home2/salman2152/jafree.kabelae.com/webapi/api.php:19
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 19
+[28-Apr-2022 03:04:57 America/Chicago] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home2/salman2152/jafree.kabelae.com/webapi/api.php:19
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 19
+[28-Apr-2022 03:05:21 America/Chicago] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home2/salman2152/jafree.kabelae.com/webapi/api.php:19
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 19
+[28-Apr-2022 03:05:23 America/Chicago] PHP Fatal error:  Uncaught Error: [] operator not supported for strings in /home2/salman2152/jafree.kabelae.com/webapi/api.php:19
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 19
+[28-Apr-2022 03:42:28 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home2/salman2152/jafree.kabelae.com/webapi/api.php:42
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 42
+[28-Apr-2022 03:42:33 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home2/salman2152/jafree.kabelae.com/webapi/api.php:42
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 42
+[28-Apr-2022 03:45:11 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on null in /home2/salman2152/jafree.kabelae.com/webapi/api.php:60
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 60
+[10-May-2022 08:22:05 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 122
+[10-May-2022 09:50:51 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 157
+[10-May-2022 09:51:43 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 157
+[11-May-2022 07:31:12 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 122
+[11-May-2022 07:32:00 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 122
+[11-May-2022 07:32:04 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 122
+[11-May-2022 07:32:14 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 122
+[11-May-2022 07:33:46 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 122
+[11-May-2022 07:39:05 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 122
+[11-May-2022 07:52:32 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 122
+[11-May-2022 08:21:55 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 122
+[11-May-2022 08:22:28 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 122
+[11-May-2022 08:25:29 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 122
+[11-May-2022 09:18:19 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, null given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 91
+[12-May-2022 04:39:13 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 174
+[12-May-2022 04:39:18 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 174
+[12-May-2022 04:39:38 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 174
+[12-May-2022 04:39:50 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 174
+[15-May-2022 05:30:09 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home2/salman2152/jafree.kabelae.com/webapi/api.php:260
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 260
+[15-May-2022 05:30:22 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home2/salman2152/jafree.kabelae.com/webapi/api.php:260
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 260
+[15-May-2022 05:30:42 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home2/salman2152/jafree.kabelae.com/webapi/api.php:260
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 260
+[15-May-2022 05:30:48 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home2/salman2152/jafree.kabelae.com/webapi/api.php:260
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 260
+[15-May-2022 05:34:51 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home2/salman2152/jafree.kabelae.com/webapi/api.php:260
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 260
+[15-May-2022 05:40:06 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home2/salman2152/jafree.kabelae.com/webapi/api.php:260
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 260
+[15-May-2022 05:40:28 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home2/salman2152/jafree.kabelae.com/webapi/api.php:260
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 260
+[15-May-2022 05:41:21 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home2/salman2152/jafree.kabelae.com/webapi/api.php:260
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 260
+[15-May-2022 05:41:24 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home2/salman2152/jafree.kabelae.com/webapi/api.php:260
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 260
+[15-May-2022 05:42:57 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home2/salman2152/jafree.kabelae.com/webapi/api.php:260
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 260
+[15-May-2022 05:49:10 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in /home2/salman2152/jafree.kabelae.com/webapi/api.php:290
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 290
+[15-May-2022 05:49:21 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in /home2/salman2152/jafree.kabelae.com/webapi/api.php:290
+Stack trace:
+#0 {main}
+  thrown in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 290
+[15-May-2022 06:05:02 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 319
+[16-May-2022 03:54:54 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 262
+[16-May-2022 03:56:52 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 262
+[16-May-2022 03:57:10 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 262
+[16-May-2022 03:57:35 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 262
+[16-May-2022 03:58:16 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 262
+[16-May-2022 04:01:22 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 262
+[16-May-2022 04:01:46 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 262
+[16-May-2022 04:02:45 America/Chicago] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/salman2152/jafree.kabelae.com/webapi/api.php on line 262

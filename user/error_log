@@ -1,0 +1,90 @@
+[02-Apr-2020 07:34:46 America/Chicago] PHP Warning:  include(includes/session.php): failed to open stream: No such file or directory in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 2
+[02-Apr-2020 07:34:46 America/Chicago] PHP Warning:  include(includes/session.php): failed to open stream: No such file or directory in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 2
+[02-Apr-2020 07:34:46 America/Chicago] PHP Warning:  include(): Failed opening 'includes/session.php' for inclusion (include_path='.:/opt/cpanel/ea-php72/root/usr/share/pear') in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 2
+[28-Apr-2020 12:19:07 America/Chicago] PHP Warning:  include(includes/session.php): failed to open stream: No such file or directory in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 2
+[28-Apr-2020 12:19:07 America/Chicago] PHP Warning:  include(includes/session.php): failed to open stream: No such file or directory in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 2
+[28-Apr-2020 12:19:07 America/Chicago] PHP Warning:  include(): Failed opening 'includes/session.php' for inclusion (include_path='.:/opt/cpanel/ea-php72/root/usr/share/pear') in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 2
+[28-Apr-2020 12:35:39 America/Chicago] PHP Warning:  include(includes/session.php): failed to open stream: No such file or directory in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 2
+[28-Apr-2020 12:35:39 America/Chicago] PHP Warning:  include(includes/session.php): failed to open stream: No such file or directory in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 2
+[28-Apr-2020 12:35:39 America/Chicago] PHP Warning:  include(): Failed opening 'includes/session.php' for inclusion (include_path='.:/opt/cpanel/ea-php72/root/usr/share/pear') in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 2
+[28-Apr-2020 12:55:56 America/Chicago] PHP Warning:  include(includes/session.php): failed to open stream: No such file or directory in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 2
+[28-Apr-2020 12:55:56 America/Chicago] PHP Warning:  include(includes/session.php): failed to open stream: No such file or directory in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 2
+[28-Apr-2020 12:55:56 America/Chicago] PHP Warning:  include(): Failed opening 'includes/session.php' for inclusion (include_path='.:/opt/cpanel/ea-php72/root/usr/share/pear') in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 2
+[28-Apr-2020 14:07:10 America/Chicago] PHP Warning:  include(includes/session.php): failed to open stream: No such file or directory in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 2
+[28-Apr-2020 14:07:10 America/Chicago] PHP Warning:  include(includes/session.php): failed to open stream: No such file or directory in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 2
+[28-Apr-2020 14:07:10 America/Chicago] PHP Warning:  include(): Failed opening 'includes/session.php' for inclusion (include_path='.:/opt/cpanel/ea-php72/root/usr/share/pear') in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 2
+[28-Apr-2020 15:35:00 America/Chicago] PHP Warning:  include(includes/conn.php): failed to open stream: No such file or directory in /home3/salman2152/jafree.kabelae.com/includes/session.php on line 3
+[28-Apr-2020 15:35:00 America/Chicago] PHP Warning:  include(includes/conn.php): failed to open stream: No such file or directory in /home3/salman2152/jafree.kabelae.com/includes/session.php on line 3
+[28-Apr-2020 15:35:00 America/Chicago] PHP Warning:  include(): Failed opening 'includes/conn.php' for inclusion (include_path='.:/opt/cpanel/ea-php72/root/usr/share/pear') in /home3/salman2152/jafree.kabelae.com/includes/session.php on line 3
+[28-Apr-2020 15:35:00 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home3/salman2152/jafree.kabelae.com/includes/session.php:10
+Stack trace:
+#0 /home3/salman2152/jafree.kabelae.com/user/profile_update.php(2): include()
+#1 {main}
+  thrown in /home3/salman2152/jafree.kabelae.com/includes/session.php on line 10
+[28-Apr-2020 15:40:12 America/Chicago] PHP Warning:  include(includes/conn.php): failed to open stream: No such file or directory in /home3/salman2152/jafree.kabelae.com/includes/session.php on line 3
+[28-Apr-2020 15:40:12 America/Chicago] PHP Warning:  include(includes/conn.php): failed to open stream: No such file or directory in /home3/salman2152/jafree.kabelae.com/includes/session.php on line 3
+[28-Apr-2020 15:40:12 America/Chicago] PHP Warning:  include(): Failed opening 'includes/conn.php' for inclusion (include_path='.:/opt/cpanel/ea-php72/root/usr/share/pear') in /home3/salman2152/jafree.kabelae.com/includes/session.php on line 3
+[28-Apr-2020 15:40:12 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home3/salman2152/jafree.kabelae.com/includes/session.php:10
+Stack trace:
+#0 /home3/salman2152/jafree.kabelae.com/user/profile_update.php(2): include()
+#1 {main}
+  thrown in /home3/salman2152/jafree.kabelae.com/includes/session.php on line 10
+[28-Apr-2020 15:45:46 America/Chicago] PHP Warning:  include(includes/conn.php): failed to open stream: No such file or directory in /home3/salman2152/jafree.kabelae.com/includes/session.php on line 3
+[28-Apr-2020 15:45:46 America/Chicago] PHP Warning:  include(includes/conn.php): failed to open stream: No such file or directory in /home3/salman2152/jafree.kabelae.com/includes/session.php on line 3
+[28-Apr-2020 15:45:46 America/Chicago] PHP Warning:  include(): Failed opening 'includes/conn.php' for inclusion (include_path='.:/opt/cpanel/ea-php72/root/usr/share/pear') in /home3/salman2152/jafree.kabelae.com/includes/session.php on line 3
+[28-Apr-2020 15:45:46 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home3/salman2152/jafree.kabelae.com/includes/session.php:10
+Stack trace:
+#0 /home3/salman2152/jafree.kabelae.com/user/profile_update.php(2): include()
+#1 {main}
+  thrown in /home3/salman2152/jafree.kabelae.com/includes/session.php on line 10
+[28-Apr-2020 15:49:37 America/Chicago] PHP Warning:  include(includes/session.php): failed to open stream: No such file or directory in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 3
+[28-Apr-2020 15:49:37 America/Chicago] PHP Warning:  include(includes/session.php): failed to open stream: No such file or directory in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 3
+[28-Apr-2020 15:49:37 America/Chicago] PHP Warning:  include(): Failed opening 'includes/session.php' for inclusion (include_path='.:/opt/cpanel/ea-php72/root/usr/share/pear') in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 3
+[28-Apr-2020 15:49:37 America/Chicago] PHP Fatal error:  Uncaught Error: Call to undefined function alert() in /home3/salman2152/jafree.kabelae.com/user/profile_update.php:12
+Stack trace:
+#0 {main}
+  thrown in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 12
+[28-Apr-2020 15:50:48 America/Chicago] PHP Warning:  include(includes/session.php): failed to open stream: No such file or directory in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 3
+[28-Apr-2020 15:50:48 America/Chicago] PHP Warning:  include(includes/session.php): failed to open stream: No such file or directory in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 3
+[28-Apr-2020 15:50:48 America/Chicago] PHP Warning:  include(): Failed opening 'includes/session.php' for inclusion (include_path='.:/opt/cpanel/ea-php72/root/usr/share/pear') in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 3
+[28-Apr-2020 15:50:48 America/Chicago] PHP Fatal error:  Uncaught Error: Call to undefined function alert() in /home3/salman2152/jafree.kabelae.com/user/profile_update.php:12
+Stack trace:
+#0 {main}
+  thrown in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 12
+[28-Apr-2020 15:52:23 America/Chicago] PHP Warning:  include(includes/conn.php): failed to open stream: No such file or directory in /home3/salman2152/jafree.kabelae.com/includes/session.php on line 3
+[28-Apr-2020 15:52:23 America/Chicago] PHP Warning:  include(includes/conn.php): failed to open stream: No such file or directory in /home3/salman2152/jafree.kabelae.com/includes/session.php on line 3
+[28-Apr-2020 15:52:23 America/Chicago] PHP Warning:  include(): Failed opening 'includes/conn.php' for inclusion (include_path='.:/opt/cpanel/ea-php72/root/usr/share/pear') in /home3/salman2152/jafree.kabelae.com/includes/session.php on line 3
+[28-Apr-2020 15:52:23 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home3/salman2152/jafree.kabelae.com/includes/session.php:10
+Stack trace:
+#0 /home3/salman2152/jafree.kabelae.com/user/profile_update.php(3): include()
+#1 {main}
+  thrown in /home3/salman2152/jafree.kabelae.com/includes/session.php on line 10
+[28-Apr-2020 15:53:39 America/Chicago] PHP Warning:  include(includes/conn.php): failed to open stream: No such file or directory in /home3/salman2152/jafree.kabelae.com/includes/session.php on line 3
+[28-Apr-2020 15:53:40 America/Chicago] PHP Warning:  include(includes/conn.php): failed to open stream: No such file or directory in /home3/salman2152/jafree.kabelae.com/includes/session.php on line 3
+[28-Apr-2020 15:53:40 America/Chicago] PHP Warning:  include(): Failed opening 'includes/conn.php' for inclusion (include_path='.:/opt/cpanel/ea-php72/root/usr/share/pear') in /home3/salman2152/jafree.kabelae.com/includes/session.php on line 3
+[28-Apr-2020 15:53:40 America/Chicago] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home3/salman2152/jafree.kabelae.com/includes/session.php:10
+Stack trace:
+#0 /home3/salman2152/jafree.kabelae.com/user/profile_update.php(3): include()
+#1 {main}
+  thrown in /home3/salman2152/jafree.kabelae.com/includes/session.php on line 10
+[28-Apr-2020 15:57:05 America/Chicago] PHP Fatal error:  Uncaught Error: Call to undefined function alert() in /home3/salman2152/jafree.kabelae.com/user/profile_update.php:7
+Stack trace:
+#0 {main}
+  thrown in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 7
+[28-Apr-2020 15:58:31 America/Chicago] PHP Fatal error:  Uncaught Error: Call to undefined function alert() in /home3/salman2152/jafree.kabelae.com/user/profile_update.php:7
+Stack trace:
+#0 {main}
+  thrown in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 7
+[28-Apr-2020 15:59:16 America/Chicago] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home3/salman2152/jafree.kabelae.com/user/profile_update.php:11) in /home3/salman2152/jafree.kabelae.com/user/profile_update.php on line 39
+[30-Jan-2021 01:16:55 America/Chicago] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'salman211_jafree'@'localhost' (using password: YES) in /home3/salman2152/jafree.kabelae.com/includes/conn.php on line 2
+[30-Jan-2021 01:26:33 America/Chicago] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'salman211_jafree'@'localhost' (using password: YES) in /home3/salman2152/jafree.kabelae.com/includes/conn.php on line 2
+[30-Jan-2021 02:54:29 America/Chicago] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'salman211_jafree'@'localhost' (using password: YES) in /home3/salman2152/jafree.kabelae.com/includes/conn.php on line 2
+[30-Jan-2021 02:54:33 America/Chicago] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'salman211_jafree'@'localhost' (using password: YES) in /home3/salman2152/jafree.kabelae.com/includes/conn.php on line 2
+[30-Jan-2021 02:55:49 America/Chicago] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'salman211_jafree'@'localhost' (using password: YES) in /home3/salman2152/jafree.kabelae.com/includes/conn.php on line 2
+[30-Jan-2021 03:20:49 America/Chicago] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'salman211_jafree'@'localhost' (using password: YES) in /home3/salman2152/jafree.kabelae.com/includes/conn.php on line 2
+[30-Jan-2021 03:30:54 America/Chicago] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'salman211_jafree'@'localhost' (using password: YES) in /home3/salman2152/jafree.kabelae.com/includes/conn.php on line 2
+[30-Jan-2021 03:37:49 America/Chicago] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'salman211_jafree'@'localhost' (using password: YES) in /home3/salman2152/jafree.kabelae.com/includes/conn.php on line 2
+[30-Jan-2021 04:41:44 America/Chicago] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'salman211_jafree'@'localhost' (using password: YES) in /home3/salman2152/jafree.kabelae.com/includes/conn.php on line 2
+[30-Jan-2021 04:41:47 America/Chicago] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'salman211_jafree'@'localhost' (using password: YES) in /home3/salman2152/jafree.kabelae.com/includes/conn.php on line 2
+[30-Jan-2021 04:41:50 America/Chicago] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'salman211_jafree'@'localhost' (using password: YES) in /home3/salman2152/jafree.kabelae.com/includes/conn.php on line 2
+[13-Apr-2022 00:00:39 America/Chicago] PHP Warning:  mysqli::__construct(): (08004/1040): Too many connections in /home2/salman2152/jafree.kabelae.com/includes/conn.php on line 2
