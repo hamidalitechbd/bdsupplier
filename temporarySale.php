@@ -235,6 +235,7 @@ animation: spin 2s linear infinite;
     include 'includes/scripts.php'; 
     include 'includes/productAdvanceSearch-modal.php';
     include 'includes/previousProducts-modal.php';
+	include 'includes/saleSerializeProduct-modal.php';
 ?>
 <script src="dist/js/select2.min.js"></script>
 <script src="includes/js/manageTemporarySale.js"></script>

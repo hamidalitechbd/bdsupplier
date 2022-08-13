@@ -3,7 +3,8 @@ $conPrefix = '../';
 include $conPrefix . 'includes/session.php';
 
 date_default_timezone_set('Asia/Dhaka');
-$toDay = (new DateTime($test))->format("Y-m-d H:i:s");
+//$toDay = (new DateTime($test))->format("Y-m-d H:i:s");
+$toDay = "2022-08-13 07:21:53";
 $toDate = (new DateTime())->format("Y-m-d");
 //session_start();
 if(isset($_POST["action"])){
@@ -13,12 +14,18 @@ if(isset($_POST["action"])){
 	    $currentStockId = '';
 	    $productId = $_POST["product_id"];
 		$warehouseId = $_POST["warehouse_id"];
-	    $sql = "SELECT currentStock AS totalStock, id 
+	    /* $sql = "SELECT currentStock AS totalStock, id 
                 FROM tbl_currentStock
-                WHERE tbl_productsId='$productId' AND tbl_wareHouseId='$warehouseId'";
+                WHERE tbl_productsId='$productId' AND tbl_wareHouseId='$warehouseId'"; */
+				//updated For serialize products
+				$sql = "SELECT tbl_currentStock.currentStock AS totalStock, tbl_currentStock.id, tbl_products.type 
+				FROM tbl_currentStock
+				INNER JOIN tbl_products ON tbl_currentStock.tbl_productsId=tbl_products.id
+				WHERE tbl_productsId='$productId' AND tbl_currentStock.tbl_wareHouseId='$warehouseId' AND tbl_currentStock.deleted='No'";
         $result = $conn->query($sql);
         if($result){
             while($row = $result->fetch_assoc()){
+				$productType = $row['type'];
                 $totalStock += $row['totalStock'];
                 $currentStockId = $row['id'];
             }
@@ -30,6 +37,9 @@ if(isset($_POST["action"])){
             $currentStockId=rand();
         }
 		if($totalStock > 0){
+			$serializeIdArray = array();
+			$serializeSaleQtyArray = array();
+			$is_productSame = 0;
 			if(isset($_SESSION["temporarySaleShopping_cart"])){
 				$is_available = 0;
 				foreach($_SESSION["temporarySaleShopping_cart"] as $keys => $values){
@@ -65,7 +75,10 @@ if(isset($_POST["action"])){
     					'warehouse_name'           =>     $_POST["warehouse_name"],
 						'product_limit'            =>     $totalStock,
 						'product_discount'         =>     $discount_percent.'%',
-    				    'status'                   =>     $is_productSame
+    				    'status'                   =>     $is_productSame,
+						'product_type'        	   =>     $productType,
+    				    'serializeIdArray'  	   =>  [$serializeIdArray],
+					    'serializeSaleQtyArray'    =>  [$serializeSaleQtyArray]
 					);
 					$_SESSION["temporarySaleShopping_cart"][] = $item_array;
 				}
@@ -83,14 +96,19 @@ if(isset($_POST["action"])){
     				'warehouse_name'           =>     $_POST["warehouse_name"],
 					'product_limit'            =>     $totalStock,
 					'product_discount'         =>     $discount_percent.'%',
-    				'status'                   =>     $is_productSame
+    				'status'                   =>     $is_productSame,
+					'product_type'        	   =>     $productType,
+    				'serializeIdArray'  	   =>  [$serializeIdArray],
+					'serializeSaleQtyArray'    =>  [$serializeSaleQtyArray]
 				);
 				$_SESSION["temporarySaleShopping_cart"][] = $item_array;
 			}
 		}else{
             $stockError++;
         }
-        echo $stockError;
+        // echo $stockError;
+		$data = array('productType'=>$productType, 'productId'=>$_POST["product_id"], 'warehouseId'=>$_POST["warehouse_id"], 'count'=>$stockError, 'currentStockId'=>$currentStockId);
+        echo json_encode($data);
 	}
 	else if($_POST["action"] == 'remove'){
 	    $changed = 0;
@@ -109,6 +127,10 @@ if(isset($_POST["action"])){
 		}
 	}
 	else if($_POST["action"] == "adjust"){
+		$productType = '';
+		$productId = '';
+		$warehouseId = '';
+		$currentStockId = '';
 		if(isset($_SESSION["temporarySaleShopping_cart"])){
 			foreach($_SESSION["temporarySaleShopping_cart"] as $keys => $values){
 				if($_SESSION["temporarySaleShopping_cart"][$keys]['id'] == $_POST["id"]){
@@ -116,11 +138,42 @@ if(isset($_POST["action"])){
 					$_SESSION["temporarySaleShopping_cart"][$keys]['product_price'] =  $_POST["product_price"];
 					$_SESSION["temporarySaleShopping_cart"][$keys]['product_limit'] =  $_POST["product_limit"];
 					$_SESSION["temporarySaleShopping_cart"][$keys]['product_discount'] =  $_POST["product_discount"];
+					// Serialize Product
+					if ($_SESSION["temporarySaleShopping_cart"][$keys]['product_type'] == "serialize") {
+						if ($_POST['product_type']) {
+							$serializeId = $_POST['serializeProductsId'];
+							$serializeSaleQty = $_POST['serializeSaleQuantity'];
+							$serializeIdExist = TRUE;
+							foreach ($_SESSION["temporarySaleShopping_cart"][$keys]['serializeIdArray'] as $key => $value) {
+								if ($value == $serializeId) {
+									//session()->put("sale_cart_array." . $keys . ".serializeSaleQtyArray." . $key, $serializeSaleQty);
+									$_SESSION["temporarySaleShopping_cart"][$keys]['serializeSaleQtyArray'][$key] =  $serializeSaleQty;
+									$ddd = $_SESSION["temporarySaleShopping_cart"][$keys]['serializeSaleQtyArray'];
+									$serializeIdExist = FALSE;
+								}
+							}
+							if ($serializeIdExist) {
+								/*Session::push("sale_cart_array." . $keys . ".serializeIdArray", $serializeId);
+								Session::push("sale_cart_array." . $keys . ".serializeSaleQtyArray", $serializeSaleQty);*/
+								array_push($_SESSION["temporarySaleShopping_cart"][$keys]['serializeIdArray'],$serializeId);
+								
+								array_push($_SESSION["temporarySaleShopping_cart"][$keys]['serializeSaleQtyArray'],$serializeSaleQty);
+								$ddd = $_SESSION["temporarySaleShopping_cart"][$keys]['serializeSaleQtyArray'];
+							}
+						}
+					}
+					$productType = $_SESSION["temporarySaleShopping_cart"][$keys]['product_type'];
+					$productId = $_SESSION["temporarySaleShopping_cart"][$keys]['product_id'];
+					$warehouseId = $_SESSION["temporarySaleShopping_cart"][$keys]['warehouse_id'];
+					$currentStockId = $_SESSION["temporarySaleShopping_cart"][$keys]['id'];
+					// End Serialize Product
 					break;
 				}
 			}
 		}
 		//echo $_POST["product_quantity"];
+		$data = array('productType'=>$productType, 'productId'=>$productId, 'warehouseId'=>$warehouseId, 'currentStockId'=>$currentStockId, 'ddd'=>$ddd);
+        echo json_encode($data);
 	}
 	else if($_POST["action"] == 'empty'){
 		unset($_SESSION["temporarySaleShopping_cart"]);
@@ -149,6 +202,7 @@ if(isset($_POST["action"])){
     	for($i = 0; $i < count($salesProduct); $i=$i+$ind){
     	    $updateWarehouseFlag = 0;
     	    for($j =0; $j < count($wirehouseProduct); $j++){
+
     	        if($wirehouseProduct[$j][0] == $salesProduct[$i] && $wirehouseProduct[$j][1] == $salesProduct[$i+9]){
     	            $wirehouseProduct[$j][2] = $wirehouseProduct[$j][2] + $salesProduct[$i+1]; 
     	            $updateWarehouseFlag= 1;
@@ -238,6 +292,50 @@ if(isset($_POST["action"])){
         						}
         				    }
         				}
+						// Start Insert Sale Serialize Product
+						foreach($_SESSION["temporarySaleShopping_cart"] as $keys => $values){
+        					if ($_SESSION["temporarySaleShopping_cart"][$keys]["product_type"] == "serialize") {
+								$product_id = $_SESSION["temporarySaleShopping_cart"][$keys]['product_id'];
+								$warehouse_id = $_SESSION["temporarySaleShopping_cart"][$keys]['warehouse_id'];
+        						foreach ($_SESSION["temporarySaleShopping_cart"][$keys]["serializeIdArray"] as $key => $serializeId) {
+        							$serializeSaleQtyArray = $_SESSION["temporarySaleShopping_cart"][$keys]["serializeSaleQtyArray"];
+									$sale_quantity = $serializeSaleQtyArray[$key];
+        							if (empty($serializeId) || empty($serializeSaleQtyArray[$key])) {
+        								continue;
+        							}
+									$sql_saleSerializeProduct = "INSERT INTO `sale_serialize_products`(`tbl_temporary_sale_id`, `product_id`, `warehouse_id`, `tbl_serialize_products_id`, `sale_quantity`, `created_by`, `created_date`) 
+        						        VALUES ($salesId,$product_id,$warehouse_id,'$serializeId','$sale_quantity','$loginID','$toDay')";
+        			            	$conn->query($sql_saleSerializeProduct);
+								}
+							}
+						} 
+						// End Insert sale Serialize Product fsdf
+						//Start Update Serialize Product fdsf
+						foreach($_SESSION["temporarySaleShopping_cart"] as $keys => $values){
+        					if ($_SESSION["temporarySaleShopping_cart"][$keys]["product_type"] == "serialize") {
+        						$quantity = 0;
+        						foreach ($_SESSION["temporarySaleShopping_cart"][$keys]["serializeIdArray"] as $key => $serializeId) {
+        							$serializeSaleQtyArray = $_SESSION["temporarySaleShopping_cart"][$keys]["serializeSaleQtyArray"];
+        							if (empty($serializeId)) {
+        								continue;
+        							}
+        							$sql_serializeProduct = "select * from tbl_serialize_products where id='$serializeId'";
+        							$result_serializeProduct = $conn->query($sql_serializeProduct);
+        							if ($result_serializeProduct->num_rows > 0) {
+        							    while($row_serializeProduct = $result_serializeProduct->fetch_assoc()){
+            								$totalSerializeQuantity = ($row_serializeProduct['used_quantity'] + $serializeSaleQtyArray[$key]);
+            								$update_serialize = "Update tbl_serialize_products set used_quantity='$totalSerializeQuantity'";
+            								if ($row_serializeProduct['quantity'] == $totalSerializeQuantity) {
+            								    $update_serialize .= ", is_sold='OFF'";
+            								}
+            								$update_serialize .= " WHERE id='$serializeId'";
+            								$conn->query($update_serialize);
+        							    }
+        							}
+        						}
+        					} 
+    					}
+						// End Update Serialize Product
         				if($error == 0){
         				    /*$customerType = 'Party';
         				    $sql = "SELECT LPAD(IFNULL(max(voucherNo),0)+1, 6, 0) as voucherCode, LPAD(IFNULL(max(voucherNo),0)+2, 6, 0) as voucherReceiveCode 
@@ -317,6 +415,17 @@ if(isset($_POST["action"])){
 	    $vat=$_POST['vat'];
     	$ait=$_POST['ait'];
     	$carringCost=$_POST['carringCost'];
+		// added by hamid
+		if ($vat == '') {
+			$vat = 0;
+		}
+		if ($ait == '') {
+			$ait = 0;
+		}
+		if ($carringCost == '') {
+			$carringCost = 0;
+		}
+		// End
     	$requisitionNo=$_POST['requisitionNo'];
     	$wareHouse=$_POST['wareHouse'];
     	$productId = $_POST['productId'];
@@ -340,8 +449,10 @@ if(isset($_POST["action"])){
 		$warehouseWiseProductArray = array(array());
 		$voucherEntryArray = array(array());
 		$salesEntry = array();
+		$transport = 0;
     	try{
     	    $checkOverQuantity = 0;
+			$grandTotalAfterOffer=0;
     	    if(isset($_SESSION["temporarySaleShopping_cart"])){
     	        $data = '';
     	        if(count($_SESSION["temporarySaleShopping_cart"]) == count($productIdArray)){
@@ -749,7 +860,8 @@ if(isset($_POST["action"])){
         						    }
         						}
         					    $newProductQtyArray[$productIdEntry][0]=$productIdEntry;
-        					    $newProductQtyArray[$productIdEntry][1]+=$total_quantity;
+        					    //$newProductQtyArray[$productIdEntry][1]+=$total_quantity;
+        					    $newProductQtyArray[$productIdEntry][0]+=$total_quantity;
         						$grandTotalAfterOffer += $productTotal;
                         		$total_price = $total_price + $productTotal;
                         		$total_item = $total_item + 1;
@@ -1262,6 +1374,59 @@ if(isset($_POST["action"])){
             }
 	    }
 	}
+	else if($_POST['action'] == 'showSerializTable'){
+		$rows = '';
+		$product_id =  $_POST['id'];
+		$warehouse_id =  $_POST['warehouseId'];
+		$totalQuantityForSale = 0;
+        $productSerialId = $_POST['product_id'];
+		$matchQuantity =  $_POST['matchQuantity'];
+		$totalMatchQuantity = 0;
+		if ($matchQuantity == "CheckQuantity") {
+			$countLen =  count($_SESSION["temporarySaleShopping_cart"]);
+			for ($i = 0; $i < $countLen; $i++) {
+				$totalMatchQuantity += array_sum($_SESSION["temporarySaleShopping_cart"][$i]["serializeSaleQtyArray"]);
+			}
+			echo json_encode(array('displayTable' => $rows, "totalQuantityForSale" => $totalQuantityForSale, "totalMatchQuantity" => $totalMatchQuantity));
+			return;
+		}
+		$sql_serializeProducts = "SELECT tbl_serialize_products.id,tbl_serialize_products.tbl_productsId,tbl_serialize_products.purchase_id,tbl_serialize_products.serial_no,tbl_serialize_products.quantity,tbl_serialize_products.used_quantity 
+		                            FROM tbl_serialize_products
+		                            WHERE tbl_serialize_products.tbl_productsId = '$product_id' AND tbl_serialize_products.warehouse_id='$warehouse_id' AND tbl_serialize_products.deleted='No' AND tbl_serialize_products.status='Active' AND tbl_serialize_products.is_sold='ON'
+		                            ORDER BY tbl_serialize_products.id";
+        $result_serializeProducts = $conn->query($sql_serializeProducts);
+        if($result_serializeProducts->num_rows > 0 ){
+            $key = 0;
+            while ($row_serializeProducts = $result_serializeProducts->fetch_array()) {
+				$remainingQty = ($row_serializeProducts['quantity'] - $row_serializeProducts['used_quantity']);
+				$tblSerializeProductsId = $row_serializeProducts['id'];
+				//$saleQuantity = findStoreQuantity($product_id, $warehouse_id, $tblSerializeProductsId); // Function Calling
+				$saleQuantity = '';
+				/* comment by hamid */
+				 foreach ($_SESSION["temporarySaleShopping_cart"] as $keys => $values) {
+            		if ($_SESSION["temporarySaleShopping_cart"][$keys]['product_id'] == $product_id && $_SESSION["temporarySaleShopping_cart"][$keys]['warehouse_id'] == $warehouse_id) {
+            			$serializeIdArray = $_SESSION["temporarySaleShopping_cart"][$keys]['serializeIdArray'];
+            			$item = array_search($tblSerializeProductsId, $serializeIdArray);
+            			if ($item > 0) {
+            				$saleQuantity = $_SESSION["temporarySaleShopping_cart"][$keys]['serializeSaleQtyArray'][$item];
+            			} else {
+            				$saleQuantity = 0;
+            			}
+            		}
+            	}
+				$totalQuantityForSale += intval($saleQuantity);
+				$rows .= '<tr><td>' . ($key + 1) . '</td>' .
+					'<td>' . $row_serializeProducts['serial_no'] . '</td><td id="serializeRemainingQty_' . $tblSerializeProductsId . '">' . $remainingQty . '</td><td><input class="form-control only-number input-sm stockQuantity' . $key .
+					'" id="stockQuantity_' . $tblSerializeProductsId . '" type="text" name="stockQuantity" placeholder=" ... " required oninput="calculateTotalQuantity(this.value,' . $productSerialId . ',' . $warehouse_id . ',' . $tblSerializeProductsId . ')" value="' . $saleQuantity . '"></td></tr>';
+			
+                $key++;
+            }
+		} else {
+			$rows .= '<tr class="bg-warning"><td colspan="4">Stock Not Avaialable For Sale...</td></tr>';
+		}
+		//echo json_encode($saleQuantity);
+		echo json_encode(array('displayTable' => $rows, "totalQuantityForSale" => $totalQuantityForSale, "totalMatchQuantity" => $totalMatchQuantity));
+	}
 }
 else if (isset($_POST['fetchCart'])){
     $total_price = 0;
@@ -1300,7 +1465,14 @@ else if (isset($_POST['fetchCart'])){
     		<tr style="background-color: #e1e1e1;font-size: 12px;">
     			<td>'.$values["product_name"].'<input type="hidden" id="productId'.$values["id"].'" name="productId" value="'.$values["product_id"].'"/><input type="hidden" id="id'.$values["product_id"].'" name="id" value="'.$values["id"].'"/></td>
 				<td>'.$values["warehouse_name"].'<input type="hidden" id="warehouseId'.$values["id"].'" name="warehouse_id" value="'.$values["warehouse_id"].'"/><input type="hidden" id="warehouseName'.$values["id"].'" name="warehouse_name" value="'.$values["warehouse_name"].'"/></td>
-    			<td><input type="text" id="productQuantity'.$values["id"].'" name="productQuantity" value="'.$values["product_quantity"].'" onkeyup="calculateTotal('.$values["id"].')" onblur="updateSession('.$values["id"].')" style="width: 100%;text-align: center;"/></td>
+    			<td><input type="text" id="productQuantity'.$values["id"].'" name="productQuantity" value="'.$values["product_quantity"].'" onkeyup="calculateTotal('.$values["id"].')" onblur="updateSession('.$values["id"].')" style="width: 100%;text-align: center;"/>';
+				if ($values["product_type"] == "serialize") {
+					$output .= '<a href="#" onclick="showSerializTable(' . $values["product_id"] . ', ' . $values["warehouse_id"] . ', ' . $values["product_quantity"] . ', ' . $values["id"] . ')"> <i class="fa fa-edit"> </i> </a>';
+					$output .= '<input type="hidden" name="checkSerialize" value="' . $values["id"] . ',' . $values["warehouse_id"] . '" />';
+				} else {
+					$output .= '';
+				}	
+				$output .='</td>
     			<td><input type="text" id="availableQuantity'.$values["id"].'" name="availableQuantity" value="'.$values["product_limit"].'" style="width: 100%;text-align: center;" Readonly/></td>
     			<td align="right">
     			    <input type="text" id="productPrice'.$values["id"].'" name="productPrice" value="'.$values["product_price"].'" onkeyup="calculateTotal('.$values["id"].')"  onblur="updateSession('.$values["id"].')" style="width: 100%;text-align: center;" '.$amountDisable.'/>

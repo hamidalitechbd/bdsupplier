@@ -3,7 +3,8 @@ $conPrefix = '../';
 include $conPrefix . 'includes/session.php';
 
 date_default_timezone_set('Asia/Dhaka');
-$toDay = (new DateTime($test))->format("Y-m-d H:i:s");
+//$toDay = (new DateTime($test))->format("Y-m-d H:i:s");
+$toDay = date('Y-m-d h:i:s', time());
 
 // add customer
 if (isset($_POST['saveTemporaryPurchaseProducts'])) {

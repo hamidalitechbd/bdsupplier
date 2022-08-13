@@ -209,6 +209,7 @@ function add_to_cart(product_id, product_name, product_price, min_price, max_pri
         			url:"phpScripts/temporarySaleAction.php",
         			method:"POST",
         			data:{product_id:product_id, product_name:product_name, product_discount:product_discount, product_price:product_price,min_price:min_price, max_price:max_price, product_quantity:product_quantity, warehouse_id:warehouse_id, warehouse_name:warehouse_name, action:action},
+					dataType: 'json',
         			success:function(data)
         			{
         				if(data > 0){
@@ -223,6 +224,14 @@ function add_to_cart(product_id, product_name, product_price, min_price, max_pri
                     		}); 
         			    }else{
         				    load_cart_data();
+							// Start Serialize Product
+							if (data.productType == "serialize") {
+								let productId = data.productId;
+								let warehouseId = data.warehouseId;
+								let currentStockId = data.currentStockId;
+								showSerializTable(productId, warehouseId, '', currentStockId);
+							}
+							// End Serialize Product
         				     $("#divASMsg").html("<strong><i class='icon fa fa-check'></i>Success ! </strong> Product Added");
                     		$("#divASMsg").show().delay(2000).fadeOut().queue(function(n) {
                     		  $(this).hide(); n();
@@ -249,6 +258,95 @@ function add_to_cart(product_id, product_name, product_price, min_price, max_pri
     	}
     }
 }
+
+// Start Serialize Product
+var serializeProductsId = 0;
+var serializeSaleQuantity = 0;
+var countLen = 0;
+var checkSerializeProductQuantity = false;
+
+function showSerializTable(id, warehouseId, txt, product_id) {
+	$("#serializProductId").val(id);
+	$("#serializProductWarehouseId").val(warehouseId);
+	let matchQuantity = '';
+	//let _token = $('input[name="_token"]').val();
+	let fd = new FormData();
+	if (txt == "checkSerializeTotalQuantity") {
+		var totalSaleQuantity = 0;
+		$('[name="checkSerialize"]').each(function () {
+			let productAndWarehouse = $(this).val();
+			let tempArray = productAndWarehouse.split(',');
+			//totalSaleQuantity += parseInt($("#productQuantity" + product_id).val());
+			totalSaleQuantity += parseInt($("#productQuantity" + tempArray[0]).val());
+		});
+		matchQuantity = "CheckQuantity";
+	}
+	fd.append('matchQuantity', matchQuantity);
+	fd.append('id', id);
+	fd.append('product_id', product_id);
+	fd.append('warehouseId', warehouseId);
+	fd.append('action', "showSerializTable");
+	$.ajax({
+		url: "phpScripts/temporarySaleAction.php",
+		method: "POST",
+		data: fd,
+		contentType: false,
+		processData: false,
+		dataType: "json",
+		success: function (result) {
+			if (txt == "checkSerializeTotalQuantity") {
+				checkSerializeProductQuantity = false;
+				if (result.totalMatchQuantity == totalSaleQuantity) {
+					checkSerializeProductQuantity = true;
+				}
+			} else {
+				console.log(result.totalQuantityForSale);
+				$("#serializeProductTable").html('');
+				$("#serializeProductTable").html(result.displayTable);
+				$("#serialNumsModal").modal("show");
+				$("#totalStockQuantity").text(result.totalQuantityForSale);
+			}
+		},
+		beforeSend: function () {
+			$('#loading').show();
+		},
+		complete: function () {
+			$('#loading').hide();
+			//let totalStockQuantity = $("#quantity_" + id + "_" + warehouseId).val();
+			/* let totalStockQuantity = $("#productQuantity" + product_id).val();
+			$("#totalStockQuantity").text(totalStockQuantity); */
+		},
+		error: function (response) {
+			alert(JSON.stringify(response))
+			$("#serializeProductTable").text("Something Went Wrong.Please Try Again");
+		}
+	});
+}
+
+function calculateTotalQuantity(saleQty, product_id, warehouse_id, tblSerializeId) {
+	var serializeRemainingQty = parseFloat($("#serializeRemainingQty_" + tblSerializeId).text());
+	if (saleQty > serializeRemainingQty) {
+		$("#stockQuantity_" + tblSerializeId).val('');
+		alert("Quantity Not Available!");
+		return 0;
+	}
+	var totalStockQuantity = 0;
+	$('[name="stockQuantity"]').each(function () {
+		var currentTxtQuantity = $(this).val();
+		if (currentTxtQuantity == '') {
+			currentTxtQuantity = 0;
+		}
+		totalStockQuantity += parseFloat(currentTxtQuantity);
+	});
+	$("#totalStockQuantity").text(totalStockQuantity);
+	$("#productQuantity" + product_id).val(totalStockQuantity);
+	serializeProductsId = tblSerializeId;
+	serializeSaleQuantity = saleQty;
+	let product_type = "serialize";
+	updateSession(product_id, product_type);
+}
+
+// End Serialize Product
 
 $(document).on('click', '.delete', function(){
     var conMsg = confirm("Are you sure to delete??");
@@ -424,7 +522,7 @@ function loadWarehouseWiseProductsWithStock(){
 }
 
 //Update Session
-function updateSession(id){
+function updateSession(id, product_type) {
 	var product_price = $('#productPrice'+id+'').val();
 	var max_price = $('#productMaxPrice'+id).val();
 	var min_price = $('#productMinPrice'+id).val();
@@ -460,7 +558,7 @@ function updateSession(id){
         $.ajax({
     		url:"phpScripts/temporarySaleAction.php",
     		method:"POST",
-    		data:{id:id, product_discount:product_discount, product_price:product_price, product_quantity:product_quantity,product_limit:totalQuantity, action:action},
+    		data:{id:id, product_discount:product_discount, product_price:product_price, product_quantity:product_quantity,product_limit:totalQuantity, action:action, product_type: product_type, serializeProductsId: serializeProductsId, serializeSaleQuantity: serializeSaleQuantity },
     		beforeSend: function () {
                     //$('#loading').show();
                 adjCounter++;
@@ -723,7 +821,6 @@ $(document).on('click', '#check_out_cart', function(){
     		dataType: 'json',
     		success:function(data)
     		{
-    		    
     		    if(data.msg == "Success"){
     		        $("#sales").val(data.sales);
                     $("#salesProduct").val(data.salesProduct);

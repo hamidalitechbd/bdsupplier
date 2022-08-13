@@ -2,11 +2,11 @@
 $conPrefix = '../';
 include $conPrefix . 'includes/session.php';
 
-/*date_default_timezone_set('Asia/Dhaka');
-$toDay = date('Y-m-d h:i:s', time());*/
+/*date_default_timezone_set('Asia/Dhaka');*/
+$toDay = date('Y-m-d h:i:s', time());
 
 date_default_timezone_set('Asia/Dhaka');
-$toDay = (new DateTime($test))->format("Y-m-d H:i:s");
+//$toDay = (new DateTime($test))->format("Y-m-d H:i:s");
 
 include('resize_image_product.php');
 if(isset($_GET['page'])){
