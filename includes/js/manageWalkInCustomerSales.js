@@ -751,7 +751,6 @@ $(document).on('click', '#check_out_cart', function () {
 					}
 				}
 				// End Check Serialize Product Quantity 
-				//alert(warehouseId);
 				$.ajax({
 					url: "phpScripts/action.php",
 					method: "POST",
@@ -760,7 +759,6 @@ $(document).on('click', '#check_out_cart', function () {
 					processData: false,
 					dataType: 'json',
 					success: function (data) {
-						//alert(JSON.stringify(data));
 						if (data.msg == "Success") {
 							$('#check_out_cart').trigger("reset");
 							checkProduct = 0;

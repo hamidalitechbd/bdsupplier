@@ -59,8 +59,18 @@ function loadPurchase(){
 			var specificationHTML="<thead style='background-color: #e1e1e1;'><th>SN</th><th>Item Name(Code)</th><th>Unit Price</th><th>Quantity</th><th>Returned Quantity</th><th>Return Quantity</th><th>Remaining Quantity</th><th>Total</th><th>Warehouse Name</th><th style='width:6%;'>Action</th></thead>";
 			if(response != ''){
 				for(var i=0;i<response.length;i++){
-				    var remainingQuantity = response[i].quantity - response[i].returnQuantity;
-					specificationHTML += "<tr id='productRow"+i+"'><td>"+(i+1)+"<input type='hidden' name='purchaseProductsId["+i+"]' value="+response[i].purchaseProductsId+" /></td><td>"+response[i].productName+"</td><td>"+response[i].purchaseAmount+"</td><td><span id='quantity"+i+"' name='quantity["+i+"]'>"+response[i].quantity+"</td><td><span id='returnedQuantity"+i+"' name='returnedQuantity["+i+"]'>"+response[i].returnQuantity+"</span></td><td><input type='text' style='width: 60%;text-align: center;' id='returnQuantity"+i+"' name='returnQuantity["+i+"]' value='0' onkeyup='calculateTotal("+i+")'/></td><td><span id='remainingQuantity"+i+"' name='remainingQuantity["+i+"]'>"+remainingQuantity+"</span></td><td>"+response[i].totalAmount+"</td><td>"+response[i].wareHouseName+"</td><td><a href='#'  class='btn btn-danger btn-sm btn-flat' onclick='removeRows(" + i + ")'><i class='fa fa-trash'></i></a></td></tr>";
+				// For Serialize 
+				let showBtn = '';
+				let disabled = '';
+				let input = '';
+				var remainingQuantity = response[i].quantity - response[i].returnQuantity;
+				if (response[i].type == "serialize") {
+					disabled = 'disabled';
+					input = '<input type="hidden" id="totalRamainingQuanitity_'+i+'" name="totalRamainingQuanitity" value='+remainingQuantity+'>';
+					showBtn = "<button class='btn btn-primary btn-sm btn-flat' type='button' "+'onclick="showSerializTable('+response[i].purchaseId+','+response[i].tbl_wareHouseId+','+i+','+response[i].tbl_productsId+')"'+"> <i class='fa fa-eye'></i> </button> ";
+				}
+				// End
+					specificationHTML += "<tr id='productRow"+i+"'><td>"+input+""+(i+1)+"<input type='hidden' name='purchaseProductsId["+i+"]' value="+response[i].purchaseProductsId+" /></td><td>"+response[i].productName+"</td><td>"+response[i].purchaseAmount+"</td><td><span id='quantity"+i+"' name='quantity["+i+"]'>"+response[i].quantity+"</td><td><span id='returnedQuantity"+i+"' name='returnedQuantity["+i+"]'>"+response[i].returnQuantity+"</span></td><td><input type='text' style='width: 60%;text-align: center;' id='returnQuantity"+i+"' name='returnQuantity["+i+"]' value='0' onkeyup='calculateTotal("+i+")' "+disabled+" /></td><td><span id='remainingQuantity"+i+"' name='remainingQuantity["+i+"]'>"+remainingQuantity+"</span></td><td>"+response[i].totalAmount+"</td><td>"+response[i].wareHouseName+"</td><td>"+showBtn+" <a href='#'  class='btn btn-danger btn-sm btn-flat' onclick='removeRows(" + i + ")'><i class='fa fa-trash'></i></a></td></tr>";
 				}
 			}
 			
@@ -72,6 +82,130 @@ function loadPurchase(){
 		}
 	});
 }
+
+//=========== Start Serialize Product ===========//
+var productRowNum = '';  
+var tbl_serialize_productsIdArray = [];
+var stockQuantitiesSet = new Set();
+var tbl_serialize_productsIdSet = new Set();
+function showSerializTable(id, warehouseId, temTxt, product_id) {
+	$("#btn_addRow").addClass("hidden");
+	// id => purchaseId
+	// warehouseId => warehouseId
+	// product_id => product_id
+	productRowNum = temTxt // tr number
+	$("#totalRemainingQuantity").text($("#totalRamainingQuanitity_"+productRowNum).val());
+	$("#tbl_sales_id").val(id); // purchaseId
+	$("#tbl_product_id").val(product_id);
+	$("#serializProductWarehouseId").val(warehouseId);
+	let fd = new FormData();
+	fd.append('matchQuantity', 0);
+	fd.append('tbl_purchase_id', id);
+	fd.append('product_id', product_id);
+	fd.append('warehouseId', warehouseId);
+	fd.append('action', "showSerializTable");
+	$.ajax({
+		url: "phpScripts/purchaseReturnView.php",
+		method: "POST",
+		data: fd,
+		contentType: false,
+		processData: false,
+		dataType: "json",
+		success: function (result) {
+				let uniqueId = product_id+"@"+warehouseId;
+				let myData = [];
+				// Check If Exist 
+				for (item of stockQuantitiesSet.values()){
+					if (item[0] == uniqueId) {
+						 myData = item;
+					}
+				}
+				let len = myData.length;
+				// End Check If Exist
+				let serializeProducts = result.serializeProducts;
+				let rows = '';
+				let key = 0;
+				let totalQuantityForReturn = 0;
+				let returnQuantity = 0;
+				tbl_serialize_productsIdArray = [];
+				serializeProducts.forEach(serializeProduct => {
+					remainingQty = serializeProduct.quantity - serializeProduct.used_quantity;
+					tbl_serialize_products_id = serializeProduct.id;
+					tbl_serialize_productsIdArray[key] = serializeProduct.id;
+					if (len > 0 && typeof myData[key+1] != 'undefined') {
+						returnQuantity = myData[key+1];
+					}
+					totalQuantityForReturn += parseInt((returnQuantity));
+					rows += '<tr><td>' + (key + 1) + '</td>' +
+						'<td id="serializeRemainingQty_' + tbl_serialize_products_id + '">' + remainingQty + '</td><td><input class="form-control only-number input-sm stockQuantity' + key +
+						'" id="stockQuantity_' + tbl_serialize_products_id + '" type="text" name="stockQuantity" placeholder=" ... " required oninput="calculateTotalQuantity(this.value,' + product_id + ',' + warehouseId + ',' + tbl_serialize_products_id + ')" value="' + returnQuantity + '"></td></tr>';
+					key++;
+				});
+				$("#serializeProductReturnTable").html('');
+				$("#serializeProductReturnTable").html(rows);
+				$("#serializeProductReturnModal").modal("show");
+				$("#totalStockQuantity").text(totalQuantityForReturn);
+		},
+		beforeSend: function () {
+			$('#loading').show();
+		},
+		complete: function () {
+			$('#loading').hide();
+		},
+		error: function (response) {
+			alert(JSON.stringify(response))
+			$("#serializeProductTable").text("Something Went Wrong.Please Try Again");
+		}
+	});
+}
+
+var stockQuantities = [];
+var totalStockQuantity = 0;
+function calculateTotalQuantity(returnedQty, product_id, warehouse_id, tblSerializeProductsId) {
+	let serializeRemainingQty = parseFloat($("#serializeRemainingQty_"+tblSerializeProductsId).text());
+	if (returnedQty>serializeRemainingQty) {
+		$("#stockQuantity_"+tblSerializeProductsId).val(0);
+		$("#divErrorMsgSerialize").html("<strong><i class='icon fa fa-trash'></i>Error ! </strong> Quantity Not Avaiable!");
+		$("#divErrorMsgSerialize").show().delay(3000).fadeOut().queue(function(n) {
+		$(this).hide(); n();
+		});
+	}
+	totalStockQuantity = 0;
+	stockQuantities = $('input[name^=stockQuantity]').map(function(index, quantity) {
+		return parseInt($(quantity).val()) ? parseInt($(quantity).val()) : 0 ;
+	}).get();
+	totalStockQuantity = stockQuantities.reduce((a, b) => a + b, 0);
+	$("#totalStockQuantity").text(totalStockQuantity);
+}
+
+function confirmSerialzeProduct() {
+	// let tbl_sales_id = $("#tbl_sales_id").val(); // purchaseId
+	let tbl_product_id = $("#tbl_product_id").val();
+	let warehouseId = $("#serializProductWarehouseId").val();
+	let uniqueId = tbl_product_id+"@"+warehouseId;
+	let tempStockQuantities = [uniqueId].concat(stockQuantities);
+	let temptbl_serialize_productsIds = [uniqueId].concat(tbl_serialize_productsIdArray);
+
+	for (item of stockQuantitiesSet.values()){
+		if (item[0] == uniqueId) {
+			stockQuantitiesSet.delete(item);
+		}
+	}
+	// For tbl_serialize_product ids
+	for (idItem of tbl_serialize_productsIdSet.values()){
+		if (idItem[0] == uniqueId) {
+			tbl_serialize_productsIdSet.delete(idItem);
+		}
+	}
+	stockQuantitiesSet.add(tempStockQuantities);
+	tbl_serialize_productsIdSet.add(temptbl_serialize_productsIds);
+	$("#returnQuantity"+productRowNum).val(totalStockQuantity);
+	let totalRamainingQuanitity = parseInt($("#totalRamainingQuanitity_"+productRowNum).val());
+	$("#remainingQuantity"+productRowNum).text(totalRamainingQuanitity-totalStockQuantity);
+	$("#serializeProductReturnModal").modal("hide");
+}
+//=========== End Serialize Product ===========//
+
 function removeRows(rowId){
 	var conMsg = confirm("Are you sure to delete??")
 	if(conMsg){
@@ -103,6 +237,16 @@ $("#form_purchaseReturn").submit(function(event) {
         fd.append('quantity',quantity);
         fd.append('supplierId',supplierId);
         fd.append('purchaseProductsId',purchaseProductsId);
+		//=== Serialize Product ===//
+		 // Convert Set to Array
+		 let stockQuantities = [];
+		 let tbl_serialize_productsIds = [];
+		 stockQuantitiesSet.forEach(stockQty => stockQuantities.push(stockQty));
+		 tbl_serialize_productsIdSet.forEach(productId => tbl_serialize_productsIds.push(productId));
+		// End Convert Set to Array
+		fd.append('stockQuantities',stockQuantities);
+		fd.append('tbl_serialize_productsIds',tbl_serialize_productsIds);
+		//=== End Serialize Product ===//
         fd.append('purchaseReturn','1');
         $.ajax({
             type: 'POST',

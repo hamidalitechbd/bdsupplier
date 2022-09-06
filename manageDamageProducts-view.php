@@ -83,7 +83,12 @@
                                     
             						<div class="col-sm-2">
             						    <label for="damageQuantity">Quantity</label>  
-                                        <input type="text" class="form-control" id="damageQuantity" name="damageQuantity" placeholder=" Damage Quantity ">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="damageQuantity" name="damageQuantity" placeholder=" Damage Quantity ">
+                                            <span class="input-group-btn">
+                                                    <button id="ShowSerializeBtn" class="btn btn-primary hidden" type="button" onclick="showSerializTable()"><i class="fa fa-eye"></i></button>
+                                            </span>
+                                        </div>
             						</div>
             						<div class="col-sm-8">
             						    <label for="transferStock">Remarks</label>  
@@ -154,7 +159,10 @@
         </div>
        
       <?php include 'includes/footer.php'; ?>
-      <?php include 'includes/productAdvanceSearch-modal.php';?>
+      <?php 
+        include 'includes/productAdvanceSearch-modal.php';
+        include 'includes/saleSerializeProductReturn-modal.php';
+      ?>
     </div>
     <?php include 'includes/scripts.php'; ?>
     <script src="dist/js/select2.min.js"></script>

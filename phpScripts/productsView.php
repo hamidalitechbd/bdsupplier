@@ -73,7 +73,7 @@ if ($result->num_rows > 0) {
             $minSalePrice,
             $maxSalePrice,
             $purchasePrice,
-            $numberAsString = number_format($discount, 2),
+            $numberAsString = $discount,
             $unitStatus,
             $button
         );

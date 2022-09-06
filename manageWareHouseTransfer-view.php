@@ -80,6 +80,7 @@ legend.scheduler-border {
     include 'includes/scripts.php'; 
     include 'includes/wareHouseTransfer-modal.php';    
     include 'includes/productAdvanceSearch-modal.php';
+    include 'includes/saleSerializeProductReturn-modal.php';
 ?>
     <script src="dist/js/select2.min.js"></script>
     <script src="includes/js/manageWareHouseTransfer.js"></script> 

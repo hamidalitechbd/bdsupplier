@@ -743,6 +743,8 @@ var output1 = document.getElementById('editViewImage');
                 data: dataString,
                 dataType: "json",
                 success: function(result) {
+					$("#OSserialize_data_table").html('');
+					$("#OSserialize_data").hide();
                     $("#editOpenStockModal").modal('show');
                     $("#editOpenStockId").val(result.row_product.id);
                     $("#editOpenStockName").val(result.row_product.productName);
@@ -978,6 +980,9 @@ var output1 = document.getElementById('editViewImage');
 						  $(this).hide(); n();
 						});
 					    manageProductsTable.ajax.reload(null, false);
+						$("#OSserialize_data_table").html('');
+						$("#OSserialize_data").hide();
+						$('#editOpenStockProductForm').trigger("reset");
     				}else{
     				    alert(result);
     				}

@@ -41,7 +41,7 @@ if (isset($_POST['id'])) {
             }
             $sql_update = "update tbl_currentStock set currentStock='$currentDiff', initialStock='$openingStock' where id='$currentStockId'";
             $conn->query($sql_update);
-            $sql_update = "UPDATE tbl_products SET current_stock = current_stock+$currentDiff, opening_stock=opening_stock+$currentDiff WHERE id='$productId'";
+            $sql_update = "UPDATE tbl_products SET currentStock = currentStock+$currentDiff, openStock=openStock+$currentDiff WHERE id='$productId'";
             $conn->query($sql_update);
             if($editOSProductType == 'serialize'){
                 $stockQuantitiesArray = explode(',',$stockQuantities);
@@ -57,9 +57,9 @@ if (isset($_POST['id'])) {
             }
         }else{
             $sql_insert = "INSERT into tbl_currentStock (tbl_productsId,tbl_wareHouseId,currentStock,initialStock,entryBy,entryDate) values ('$productId','$warehouseId','$openingStock','$openingStock','$loginID','$toDay')";
-            echo json_encode($sql_insert);
+            //echo json_encode($sql_insert);
             $conn->query($sql_insert);
-            $sql_update = "UPDATE tbl_products SET current_stock = current_stock+$openingStock, opening_stock=opening_stock+$openingStock WHERE id='$productId'";
+            $sql_update = "UPDATE tbl_products SET currentStock = currentStock+$openingStock, openStock=openStock+$openingStock WHERE id='$productId'";
             $conn->query($sql_update);
             if($editOSProductType == 'serialize'){
                 $stockQuantitiesArray = explode(',',$stockQuantities);
@@ -70,7 +70,7 @@ if (isset($_POST['id'])) {
                     $sql_insert = "INSERT INTO tbl_serialize_products(tbl_productsId, warehouse_id, serial_no, quantity, created_by, created_date)
                                     VALUES ('$productId','$warehouseId','$serialNumbersEntry','$stockQuantitiesEntry','$loginID','$toDay')";
                     $conn->query($sql_insert);
-                    echo json_encode($sql_insert);
+                    //echo json_encode($sql_insert);
                 }
             }
         }

@@ -114,7 +114,10 @@
     
   </div>
    
-  <?php include 'includes/footer.php'; ?>
+  <?php 
+		include 'includes/footer.php'; 
+		include 'includes/saleSerializeProductReturn-modal.php';
+  ?>
 </div>
 <?php include 'includes/scripts.php'; ?>
 

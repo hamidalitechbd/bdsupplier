@@ -29,6 +29,13 @@ $("#transferWareHouse").select2({
 	allowClear: true
 });
 
+//=========== For Serialize Product ===========//
+var tbl_serialize_productsIdArray = [];
+var stockQuantities = [];
+var tempCurrentStock = 0;
+var product_type = '';
+//=========== End ===========//
+
 $("#products").change(function(){
     var productsId = $(this).val();
     var action = "fetchWareHouse";
@@ -46,6 +53,21 @@ $("#products").change(function(){
 		    for(var i=0; i<data.length; i++){
 			    $("#wareHouseID").append("<option value='"+data[i].id+"'>"+data[i].wareHouseName+"</option>");
 			    $("#wareHouseStock").append("<option value='"+data[i].id+"'>"+data[i].currentStock+"</option>");
+				// Serialize Product
+				product_type = data[i].type;
+				if ( product_type == "serialize") {
+					$('#transferStock').attr('disabled', true);
+					$("#ShowSerializeBtn").removeClass("hidden");
+					$("#btn_close").removeClass("hidden");
+					$("#btn_confirmSerialzeProduct").addClass("hidden");
+					$("#btn_addRow").addClass("hidden");
+				}else{
+					$('#transferStock').attr('disabled', false);
+					$("#ShowSerializeBtn").addClass("hidden");
+					tbl_serialize_productsIdArray = [];
+					stockQuantities = [];
+				}
+				// End
 			}
 		}
 	});
@@ -62,6 +84,9 @@ $("#wareHouseID").change(function(){
     if(str != "~~ Select Warehouse Stock ~~"){
         $("#currentStock").val(str);
         $("#remainingStock").val(str);
+		if ( product_type == "serialize" && str > 0) {
+			showSerializTable();
+		}
     }else{
         $("#currentStock").val("0");
         $("#remainingStock").val("0");
@@ -80,6 +105,96 @@ $("#transferStock").on("keyup", function (){
         alert("Transfer quantity can not be greater then current stock");
     }
 });
+
+//=========== Start Serialize Product ===========//
+function showSerializTable() {
+	var product_id = $("#products").val();
+	var warehouseId = $("#wareHouseID").val();
+	tempCurrentStock = $("#currentStock").val();
+	if (warehouseId == '' || product_id == '') {
+		$("#divErrorMsg").html("<strong><i class='icon fa fa-trash'></i>Error ! </strong> please select warehouse & product");
+		$("#divErrorMsg").show().delay(5000).fadeOut().queue(function(n) {
+		  $(this).hide(); n();
+		});
+		return;
+	}
+	$(".qtyTxt").text(" Quantity");
+	$(".txtView").text("Available Quantity: ");
+	$(".txtTotalView").text("Total Quantity: ");
+	$("#totalRemainingQuantity").text(tempCurrentStock);
+	$("#tbl_product_id").val(product_id);
+	$("#serializProductWarehouseId").val(warehouseId);
+	let fd = new FormData();
+	fd.append('product_id', product_id);
+	fd.append('warehouseId', warehouseId);
+	fd.append('tbl_tSalesId', 000);
+	fd.append('action', "showSerializTable");
+	$.ajax({
+		url: "phpScripts/temporarySaleAdjustmentAction.php",
+		method: "POST",
+		data: fd,
+		contentType: false,
+		processData: false,
+		dataType: "json",
+		success: function (result) {
+				let len = stockQuantities.length;
+				let serializeProducts = result.serializeProducts;
+				let rows = '';
+				let key = 0;
+				let totalTrnsfrQuantity = 0;
+				let damageQuantity = 0;
+				let trnsfrQuantity = 0;
+				tbl_serialize_productsIdArray = [];
+				serializeProducts.forEach(serializeProduct => {
+					remainingQty = serializeProduct.quantity - serializeProduct.used_quantity;
+					tbl_serialize_products_id = serializeProduct.id;
+					tbl_serialize_productsIdArray[key] = serializeProduct.id;
+					if (len > 0) {
+						trnsfrQuantity = stockQuantities[key];
+					}
+					totalTrnsfrQuantity +=  parseInt((trnsfrQuantity));
+					rows += '<tr><td>' + (key + 1) + '</td>' +
+						'<td id="serializeRemainingQty_' + tbl_serialize_products_id + '">' + remainingQty + '</td>'+
+						'<td><input class="form-control only-number input-sm stockQuantity' + key +
+						'" id="stockQuantity_' + tbl_serialize_products_id + '" type="text" name="stockQuantity" placeholder=" ... " required oninput="calculateTotalQuantity(this.value,' + product_id + ',' + warehouseId + ',' + tbl_serialize_products_id + ','+"'addReturnQty'"+')" value="' +trnsfrQuantity + '"></td></tr>';
+					key++;
+				});
+				$("#serializeProductReturnTable").html('');
+				$("#serializeProductReturnTable").html(rows);
+				$("#serializeProductReturnModal").modal("show");
+				$("#totalStockQuantity").text(totalTrnsfrQuantity);
+		},
+		beforeSend: function () {
+			$('#loading').show();
+		},
+		complete: function () {
+			$('#loading').hide();
+		},
+		error: function (response) {
+			alert("Something Went Wrong.Please Try Again");
+		}
+	});
+}
+
+function calculateTotalQuantity(saleQty, product_id, warehouse_id, tblSerializeId) {
+	var serializeRemainingQty = parseFloat($("#serializeRemainingQty_" + tblSerializeId).text());
+	if (saleQty > serializeRemainingQty) {
+		$("#stockQuantity_" + tblSerializeId).val(0);
+		$("#divErrorMsgSerialize").html("<strong><i class='icon fa fa-trash'></i>Error ! </strong> Quantity Not Avialable!");
+		$("#divErrorMsgSerialize").show().delay(3000).fadeOut().queue(function(n) {
+		    $(this).hide(); n();
+		});
+	}
+	var totalStockQuantity = 0;
+	stockQuantities = $('input[name^=stockQuantity]').map(function(index, quantity) {
+		return parseInt($(quantity).val()) ? parseInt($(quantity).val()) : 0 ;
+	}).get();
+	totalStockQuantity = stockQuantities.reduce((a, b) => a + b, 0);
+	$("#totalStockQuantity").text(totalStockQuantity);
+	$('#transferStock').val(totalStockQuantity);
+	$('#remainingStock').val(tempCurrentStock-totalStockQuantity);
+}
+//=========== End Serialize Product ===========//
 
 $(document).ready(function() {
 	$('#form_transferWarehouse').bootstrapValidator({
@@ -104,6 +219,14 @@ $(document).ready(function() {
                 fd.append('remainingStock',remainingStock);
                 fd.append('transferWareHouse',transferWareHouse);
                 fd.append('transferStock',transferStock);
+				// Serialize Product
+				if (product_type  != "serialize") {
+					tbl_serialize_productsIdArray = 0;
+					stockQuantities = 0;
+				}
+				fd.append('tbl_serialize_productsIdArray',tbl_serialize_productsIdArray);
+				fd.append('stockQuantities',stockQuantities);
+				fd.append('product_type', product_type);
                 fd.append('action',action);
                 $.ajax({
                     type: 'POST',

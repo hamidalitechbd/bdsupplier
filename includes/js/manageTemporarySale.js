@@ -269,14 +269,12 @@ function showSerializTable(id, warehouseId, txt, product_id) {
 	$("#serializProductId").val(id);
 	$("#serializProductWarehouseId").val(warehouseId);
 	let matchQuantity = '';
-	//let _token = $('input[name="_token"]').val();
 	let fd = new FormData();
 	if (txt == "checkSerializeTotalQuantity") {
 		var totalSaleQuantity = 0;
 		$('[name="checkSerialize"]').each(function () {
 			let productAndWarehouse = $(this).val();
 			let tempArray = productAndWarehouse.split(',');
-			//totalSaleQuantity += parseInt($("#productQuantity" + product_id).val());
 			totalSaleQuantity += parseInt($("#productQuantity" + tempArray[0]).val());
 		});
 		matchQuantity = "CheckQuantity";
@@ -312,9 +310,6 @@ function showSerializTable(id, warehouseId, txt, product_id) {
 		},
 		complete: function () {
 			$('#loading').hide();
-			//let totalStockQuantity = $("#quantity_" + id + "_" + warehouseId).val();
-			/* let totalStockQuantity = $("#productQuantity" + product_id).val();
-			$("#totalStockQuantity").text(totalStockQuantity); */
 		},
 		error: function (response) {
 			alert(JSON.stringify(response))

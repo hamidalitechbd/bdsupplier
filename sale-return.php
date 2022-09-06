@@ -166,11 +166,15 @@
       </div>
     </section>   
   </div>
-  <?php include 'includes/footer.php'; ?>
+  <?php 
+    include 'includes/footer.php'; 
+    include 'includes/saleSerializeProductReturn-modal.php';
+  ?>
 </div>
 <?php include 'includes/scripts.php'; ?>
 <script src="dist/js/select2.min.js"></script>
 <script src="includes/js/manageSalesReturn.js"></script> 
+
 <script type="text/javascript">
 	//$("#returnDate").val(new Date().toISOString().substring(0, 10));
 	var salesId = "<?php echo $getSalesId;?>";
