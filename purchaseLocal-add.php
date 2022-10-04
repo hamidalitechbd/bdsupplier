@@ -149,14 +149,13 @@
                 data: dataString,
                 dataType: "json",
                 success: function(result) {
+                  $("#serializeProductTable").html('');
                     $("#add_productType").val(result.row_product.type);
                     $("#add_items_in_box").val(result.row_product.items_in_box);
-                        $("#serializeProductTable").html('');
                     $modal.modal('show');
                 },
                 error: function(response) {
                     alert(JSON.stringify(response));
-
                 },
                 beforeSend: function() {
                     $('#loading').show();
