@@ -50,6 +50,7 @@ if (isset($_POST['action'])) {
             $sql = "INSERT INTO tbl_warehouse_transfer(transferDate, tbl_products_id, tbl_current_warehouse_id, current_stock, tbl_transfer_warehouse_id, transfer_stock, entryBy, entryDate) 
                 VALUES ('$transferDate','$products','$wareHouseId','$currentStock','$transferWareHouse','$transferStock','$loginID','$toDay')";
             if ($conn->query($sql)) {
+                $warehouseTransferId = $conn->insert_id;
                 $sql = "UPDATE tbl_currentStock 
                         SET transferFrom=transferFrom+$transferStock,lastUpdatedDate='$toDay',lastUpdatedBy='$loginID', 
                         	currentStock = currentStock - $transferStock 
@@ -86,6 +87,14 @@ if (isset($_POST['action'])) {
                                     $sql_insert_serialize = "INSERT INTO `tbl_serialize_products`(`tbl_productsId`, `warehouse_id`, `serial_no`, `quantity`, `created_by`, `created_date`) 
                                                   VALUES ('$products','$transferWareHouse','$maxNumber','$transferQty','$loginID','$toDay')";
                                     $insertResult = $conn->query($sql_insert_serialize);
+                                    // End
+                                    // Start
+                                    if ($insertResult) {
+                                        $serializeProductId = $conn->insert_id;
+                                        $returnSql = "INSERT INTO tbl_sale_serialize_products_return (tbl_name, tbl_id, tbl_serialize_products_id, return_info, returned_quantity, salesType, created_by, created_date) 
+                                                              values ('tbl_warehouse_transfer','$warehouseTransferId','$tbl_serialize_productsId','$serializeProductId','$transferQty','WarehouseTransfer','$loginID','$toDay')";
+                                        $result = $conn->query($returnSql);
+                                    }
                                     // End
                                 }
                             }
@@ -139,6 +148,32 @@ if (isset($_POST['action'])) {
                             SET deleted = 'Yes'
                             WHERE id='$id'";
                     if ($conn->query($sql)) {
+
+                        //====================== Start Serialize Product Transfer Delete ======================//
+                        $sql = "SELECT tbl_serialize_products_id, returned_quantity, return_info
+                                FROM tbl_sale_serialize_products_return
+                                WHERE tbl_name='tbl_warehouse_transfer' AND tbl_id='$id'  AND salesType='WarehouseTransfer' AND deleted='No'";
+                        $returnResult = $conn->query($sql);
+
+                        while ($row = $returnResult->fetch_assoc()) {
+                            $return_info = $row['return_info']; // ID 
+                            $tbl_serialize_products_id = $row['tbl_serialize_products_id'];
+                            $returned_quantity = $row['returned_quantity'];
+
+                            $sql = "UPDATE tbl_serialize_products set used_quantity=used_quantity-$returned_quantity, is_sold='ON'
+                                    where id ='$tbl_serialize_products_id' AND deleted='No'";
+                            $conn->query($sql);
+                            // Delete
+                            $sql = "UPDATE tbl_serialize_products set deleted='Yes', deleted_by='$loginID', deleted_date='$toDay'
+                                    WHERE id='$return_info'";
+                            $conn->query($sql);
+                            // End
+                        }
+                        $deleteSql = "UPDATE tbl_sale_serialize_products_return set deleted='Yes', deleted_by='$loginID', deleted_date='$toDay'
+                                      WHERE tbl_name='tbl_warehouse_transfer' AND tbl_id='$id' AND salesType='WarehouseTransfer' AND deleted='No'";
+                        $conn->query($deleteSql);
+                        //====================== End Serialize Product Transfer Delete ======================//
+
                         $conn->commit();
                         echo 'Success';
                     } else {

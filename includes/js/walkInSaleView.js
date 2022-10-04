@@ -75,7 +75,6 @@ $( "#sortData" ).change(function() {
 });*/ 
 /*------------------ Start Delete walkin sales, sales products and sales voucher (if exists) ---------------------- */
 function deleteSales(salesId){
-    alert(salesId)
     var conMsg = confirm("Are you sure to delete??");
 	if(conMsg){
 	    $.ajax({

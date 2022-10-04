@@ -281,8 +281,8 @@ if (isset($_POST["action"])) {
                                                    where id='$tbl_serialize_productsId'";
 							$updateResult = $conn->query($update_serialize);
 							if ($updateResult) {
-								$returnSql = "INSERT INTO tbl_sale_serialize_products_return (tbl_sales_return_id, returned_quantity, salesType, created_by, created_date) 
-                                		              values ('$salesReturnId','$returnQuantity','TS','$loginID','$toDay')";
+								$returnSql = "INSERT INTO tbl_sale_serialize_products_return (tbl_name, tbl_id, tbl_serialize_products_id, return_info, returned_quantity, salesType, created_by, created_date) 
+                                		              values ('tbl_sales_return','$salesReturnId','$tbl_serialize_productsId','Old','$returnQuantity','TS','$loginID','$toDay')";
 								$result = $conn->query($returnSql);
 							}
 						}
@@ -316,8 +316,9 @@ if (isset($_POST["action"])) {
                                                   VALUES ('$tempProductId','$tempWarehouseId','$maxNumber','$returnQuantity','$loginID','$toDay')";
 							$insertResult = $conn->query($sql_insert_serialize);
 							if ($insertResult) {
-								$returnSql = "INSERT INTO tbl_sale_serialize_products_return (tbl_sales_return_id, returned_quantity, salesType, created_by, created_date) 
-                                		              values ('$salesReturnId', '$returnQuantity','TS','$loginID','$toDay')";
+								$serializeProductId = $conn->insert_id;
+								$returnSql = "INSERT INTO tbl_sale_serialize_products_return (tbl_name, tbl_id, tbl_serialize_products_id, return_info, returned_quantity, salesType, created_by, created_date) 
+                                		              values ('tbl_sales_return','$salesReturnId','$serializeProductId','New','$returnQuantity','TS','$loginID','$toDay')";
 								$result = $conn->query($returnSql);
 							}
 						}
@@ -427,7 +428,7 @@ if (isset($_POST["action"])) {
 				  <th>Return Quantity</th>   
 				  <th>Remaining</th>
 				  <th>Total</th>
-				  <th width="8%">Action</th>
+				  <th>Action</th>
 				</thead>';
 	while ($row = $result->fetch_array()) {
 		$TSProductsId = $row['id'];
@@ -447,10 +448,11 @@ if (isset($_POST["action"])) {
 		$remainingQuantity = $quantity - ($soldQuantity + $returnedQuantity);
 		$totalPrice = 0;
 		$button = '';
+		$showBtn = '';
 		$disabled = '';
 		if ($productType == "serialize") {
-			//$button .= ' <a href="#" class="btn btn-info btn-flat btn-sm" onclick="showSerializTable(' . $tbl_tSalesId . ',' . $TSProductsId . ',' . $tbl_wareHouseId . ',' . $i . ',' . $tbl_productsId . ')"><i class="fa fa-edit"></i></a>';
-			$button = '<button class="btn btn-primary btn-sm btn-flat" type="button" onclick="showSerializTable(' . $tbl_tSalesId . ',' . $TSProductsId . ',' . $tbl_wareHouseId . ',' . $i . ',' . $tbl_productsId . ')"> <i class="fa fa-eye"></i> </button> ';
+			//$button = '<button class="btn btn-primary btn-sm btn-flat" type="button" onclick="showSerializTable(' . $tbl_tSalesId . ',' . $TSProductsId . ',' . $tbl_wareHouseId . ',' . $i . ',' . $tbl_productsId . ')"> <i class="fa fa-eye"></i> </button> ';
+			$showBtn = '<i style="cursor: pointer;" class="fa fa-eye btn-primary btn-xs" onclick="showSerializTable(' . $tbl_tSalesId . ',' . $TSProductsId . ',' . $tbl_wareHouseId . ',' . $i . ',' . $tbl_productsId . ')"> </i> ';
 			$disabled = 'disabled';
 		}
 		$button .= '<a href="#" class="btn btn-danger btn-sm" onclick="removeTSProducts(' . $TSProductsId . ')"><i class="fa fa-trash tiny-icon"></i></a> ';
@@ -463,7 +465,7 @@ if (isset($_POST["action"])) {
                         <td><span id="returnedQuantity_' . $TSProductsId . '" name="returnedQuantity[' . $TSProductsId . ']">' . $returnedQuantity . '</span> ' . $unitName . '</td>
                         <td><input type="text" style="width: 60%;text-align: center;" id="saleQuantity_' . $TSProductsId . '" name="saleQuantity[' . $TSProductsId . ']" value = "0" onkeyup="totalCalculation(' . $TSProductsId . ')" /> ' . $unitName . '</td>
                         <td><input type="text" style="width: 90%;text-align: center;" id="unitPrice_' . $TSProductsId . '" name="unitPrice[' . $TSProductsId . ']" value = "' . $unitPrice . '" onkeyup="totalCalculation(' . $TSProductsId . ')" /></td>
-                        <td><input type="text" style="width: 60%;text-align: center;" id="returnQuantity_' . $TSProductsId . '" name="returnQuantity[' . $TSProductsId . ']" value = "0" onkeyup="totalCalculation(' . $TSProductsId . ')" ' . $disabled . ' /> ' . $unitName . '</td>
+                        <td><input type="text" style="width: 60%;text-align: center;" id="returnQuantity_' . $TSProductsId . '" name="returnQuantity[' . $TSProductsId . ']" value = "0" onkeyup="totalCalculation(' . $TSProductsId . ')" ' . $disabled . ' />'.$showBtn.'  ' . $unitName . '</td>
                         <td style="text-align: center;"><input type="hidden" id="totalRemainingQuantity_' . $TSProductsId . '" name="totalRemainingQuantity[' . $TSProductsId . ']" value = "' . $remainingQuantity . '"><span id="remainingQuantity_' . $TSProductsId . '" name="remainingQuantity[' . $TSProductsId . ']">' . $remainingQuantity . '</span> ' . $unitName . '</td>
                         <td><span id="totalPrice_' . $TSProductsId . '" name="totalPrice[' . $TSProductsId . ']">' . $totalPrice . '</span></td>
                         <td>' . $button . '</td>

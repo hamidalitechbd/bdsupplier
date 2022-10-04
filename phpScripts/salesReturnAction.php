@@ -270,7 +270,7 @@ if (isset($_POST['action'])) {
                     }
                 }    //End for loop
 
-                //====================== Start Serialize Product Return ======================//
+                //====================== Start Serialize Product Sales Return ======================//
                 //===== Update in Existing table =====//
                 foreach ($tbl_serialize_productsIdsArray as $key => $tbl_serialize_productsId) {
                     if (strpos($tbl_serialize_productsId, '@') == true) {
@@ -284,8 +284,8 @@ if (isset($_POST['action'])) {
                                                    where id='$tbl_serialize_productsId'";
                         $updateResult = $conn->query($update_serialize);
                         if ($updateResult) {
-                            $returnSql = "INSERT INTO tbl_sale_serialize_products_return (tbl_sales_return_id, returned_quantity, salesType, created_by, created_date) 
-                                		              values ('$salesReturnId','$returnQuantity','$salesType','$loginID','$toDay')";
+                            $returnSql = "INSERT INTO tbl_sale_serialize_products_return (tbl_name, tbl_id, tbl_serialize_products_id, return_info, returned_quantity, salesType, created_by, created_date) 
+                                		        values ('tbl_sales_return','$salesReturnId','$tbl_serialize_productsId','Old','$returnQuantity','$salesType','$loginID','$toDay')";
                             $result = $conn->query($returnSql);
                         }
                     }
@@ -318,15 +318,16 @@ if (isset($_POST['action'])) {
                                                   VALUES ('$tempProductId','$tempWarehouseId','$maxNumber','$returnQuantity','$loginID','$toDay')";
                         $insertResult = $conn->query($sql_insert_serialize);
                         if ($insertResult) {
-                            $returnSql = "INSERT INTO tbl_sale_serialize_products_return (tbl_sales_return_id, returned_quantity, salesType, created_by, created_date) 
-                                		              values ('$salesReturnId', '$returnQuantity','$salesType','$loginID','$toDay')";
+                            $serializeProductId = $conn->insert_id;
+                            $returnSql = "INSERT INTO tbl_sale_serialize_products_return (tbl_name, tbl_id, tbl_serialize_products_id, return_info, returned_quantity, salesType, created_by, created_date) 
+                                		              values ('tbl_sales_return','$salesReturnId','$serializeProductId','New','$returnQuantity','$salesType','$loginID','$toDay')";
                             $result = $conn->query($returnSql);
                         }
                     }
                     // End
                 }
                 //===== End Insert Newly =====//
-                //====================== End Serialize Product Return ======================//
+                //====================== End Serialize Product Sales Return ======================//
 
                 if ($error == 0) {
                     if ($salesType == 'WalkinSale') {
@@ -472,6 +473,14 @@ if (isset($_POST['action'])) {
                     $conn->query($sql);
                     if ($row['salesType'] == 'TS') {
                         $tsFlag = 'Yes';
+                        //===== Start Updated For TS Return Delete (Hamid) =====//
+                        $tbl_salesProductsId = $row['tbl_salesProductsId'];
+                        $sql = "UPDATE tbl_tsalesproducts 
+                                set returnedQuantity=returnedQuantity-$quantity, status='Running', lastUpdatedDate='$toDay',lastUpdatedBy='$loginID'
+                                where  id= '$tbl_salesProductsId'";
+                        $conn->query($sql);
+                        //===== End Updated For TS Return Delete (Hamid) =====//
+
                     }
                 }
                 if ($tsFlag != 'Yes') {
@@ -492,6 +501,35 @@ if (isset($_POST['action'])) {
                         SET deleted='Yes', deletedDate='$toDay', deletedBy='$loginID'
                         WHERE tbl_sales_return_id='$id'";
             $conn->query($sql);
+
+
+
+
+            //====================== Start Serialize Product Sales Return Delete ======================//
+            $sql = "SELECT tbl_serialize_products_id, returned_quantity, return_info
+                    FROM tbl_sale_serialize_products_return
+                    WHERE tbl_name='tbl_sales_return' AND tbl_id='$id' AND deleted='No'";
+            $returnResult = $conn->query($sql);
+
+            while ($row = $returnResult->fetch_assoc()) {
+                $return_info = $row['return_info'];
+                $tbl_serialize_products_id = $row['tbl_serialize_products_id'];
+                $returned_quantity = $row['returned_quantity'];
+                if ($return_info == "Old") {
+                    $sql = "UPDATE tbl_serialize_products set used_quantity=used_quantity+$returned_quantity, is_sold='ON'
+                            where id ='$tbl_serialize_products_id' AND deleted='No'";
+                    $conn->query($sql);
+                } else {
+                    $sql = "UPDATE tbl_serialize_products set deleted='Yes', deleted_by='$loginID', deleted_date='$toDay'
+                            WHERE id='$tbl_serialize_products_id'";
+                    $conn->query($sql);
+                }
+            }
+            $deleteSql = "UPDATE tbl_sale_serialize_products_return set deleted='Yes', deleted_by='$loginID', deleted_date='$toDay'
+                          WHERE tbl_name='tbl_sales_return' AND tbl_id='$id' AND deleted='No'";
+            $conn->query($deleteSql);
+            //====================== End Serialize Product Sales Return Delete ======================//
+
             $conn->commit();
             echo json_encode('Success');
         } catch (Exception $e) {

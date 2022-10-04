@@ -67,10 +67,10 @@ function loadPurchase(){
 				if (response[i].type == "serialize") {
 					disabled = 'disabled';
 					input = '<input type="hidden" id="totalRamainingQuanitity_'+i+'" name="totalRamainingQuanitity" value='+remainingQuantity+'>';
-					showBtn = "<button class='btn btn-primary btn-sm btn-flat' type='button' "+'onclick="showSerializTable('+response[i].purchaseId+','+response[i].tbl_wareHouseId+','+i+','+response[i].tbl_productsId+')"'+"> <i class='fa fa-eye'></i> </button> ";
+					showBtn = "<i style='cursor: pointer;' class='fa fa-eye btn-primary btn-xs ' "+'onclick="showSerializTable('+response[i].purchaseId+','+response[i].tbl_wareHouseId+','+i+','+response[i].tbl_productsId+')"'+"></i> ";
 				}
 				// End
-					specificationHTML += "<tr id='productRow"+i+"'><td>"+input+""+(i+1)+"<input type='hidden' name='purchaseProductsId["+i+"]' value="+response[i].purchaseProductsId+" /></td><td>"+response[i].productName+"</td><td>"+response[i].purchaseAmount+"</td><td><span id='quantity"+i+"' name='quantity["+i+"]'>"+response[i].quantity+"</td><td><span id='returnedQuantity"+i+"' name='returnedQuantity["+i+"]'>"+response[i].returnQuantity+"</span></td><td><input type='text' style='width: 60%;text-align: center;' id='returnQuantity"+i+"' name='returnQuantity["+i+"]' value='0' onkeyup='calculateTotal("+i+")' "+disabled+" /></td><td><span id='remainingQuantity"+i+"' name='remainingQuantity["+i+"]'>"+remainingQuantity+"</span></td><td>"+response[i].totalAmount+"</td><td>"+response[i].wareHouseName+"</td><td>"+showBtn+" <a href='#'  class='btn btn-danger btn-sm btn-flat' onclick='removeRows(" + i + ")'><i class='fa fa-trash'></i></a></td></tr>";
+					specificationHTML += "<tr id='productRow"+i+"'><td>"+input+""+(i+1)+"<input type='hidden' name='purchaseProductsId["+i+"]' value="+response[i].purchaseProductsId+" /></td><td>"+response[i].productName+"</td><td>"+response[i].purchaseAmount+"</td><td><span id='quantity"+i+"' name='quantity["+i+"]'>"+response[i].quantity+"</td><td><span id='returnedQuantity"+i+"' name='returnedQuantity["+i+"]'>"+response[i].returnQuantity+"</span></td><td><input type='text' style='width: 60%;text-align: center;' id='returnQuantity"+i+"' name='returnQuantity["+i+"]' value='0' onkeyup='calculateTotal("+i+")' "+disabled+" />"+showBtn+"</td><td><span id='remainingQuantity"+i+"' name='remainingQuantity["+i+"]'>"+remainingQuantity+"</span></td><td>"+response[i].totalAmount+"</td><td>"+response[i].wareHouseName+"</td><td><a href='#'  class='btn btn-danger btn-sm btn-flat' onclick='removeRows(" + i + ")'><i class='fa fa-trash'></i></a></td></tr>";
 				}
 			}
 			
@@ -92,6 +92,8 @@ function showSerializTable(id, warehouseId, temTxt, product_id) {
 	$("#btn_addRow").addClass("hidden");
 	// id => purchaseId
 	// warehouseId => warehouseId
+
+	
 	// product_id => product_id
 	productRowNum = temTxt // tr number
 	$("#totalRemainingQuantity").text($("#totalRamainingQuanitity_"+productRowNum).val());

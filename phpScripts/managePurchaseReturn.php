@@ -92,8 +92,8 @@ if (isset($_POST['purchaseReturn'])) {
                             $updateResult = $conn->query($update_serialize);
                             // End Update Quantity
                             if ($updateResult) {
-                                $returnSql = "INSERT INTO tbl_sale_serialize_products_return (tbl_name, tbl_id, returned_quantity, salesType, created_by, created_date) 
-                                		              values ('tbl_purchase_return','$purchaseReturnId','$returnQuantity','Purchase','$loginID','$toDay')";
+                                $returnSql = "INSERT INTO tbl_sale_serialize_products_return (tbl_name, tbl_id, tbl_serialize_products_id, returned_quantity, salesType, created_by, created_date) 
+                                		              values ('tbl_purchase_return','$purchaseReturnId','$tbl_serialize_productsId','$returnQuantity','Purchase','$loginID','$toDay')";
                                 $result = $conn->query($returnSql);
                             }
                         }
@@ -187,6 +187,28 @@ if (isset($_POST['deletePurchaseReturn'])) {
             $sql = "UPDATE tbl_paymentVoucher SET deleted='Yes', deletedBy='$loginID', deletedDate=NOW()
                     WHERE tbl_purchase_return_id='$id'";
             $conn->query($sql);
+
+            //====================== Start Serialize Product Purchase Return Delete ======================//
+            $sql = "SELECT tbl_serialize_products_id, returned_quantity
+            FROM tbl_sale_serialize_products_return
+            WHERE tbl_name='tbl_purchase_return' AND salesType='Purchase' AND tbl_id='$id' AND deleted='No'";
+            $returnResult = $conn->query($sql);
+
+            $tbl_serialize_products_id = 0;
+            $returned_quantity = 0;
+            while ($row = $returnResult->fetch_assoc()) {
+                $tbl_serialize_products_id = $row['tbl_serialize_products_id'];
+                $returned_quantity = $row['returned_quantity'];
+
+                $sql = "UPDATE tbl_serialize_products set used_quantity=used_quantity-$returned_quantity, is_sold='ON'
+                        where id ='$tbl_serialize_products_id' AND deleted='No'";
+                $conn->query($sql);
+            }
+            $deleteSql = "UPDATE tbl_sale_serialize_products_return set deleted='Yes', deleted_by='$loginID', deleted_date='$toDay'
+                          WHERE tbl_name='tbl_purchase_return' AND salesType='Purchase' AND tbl_id='$id' AND deleted='No'";
+            $conn->query($deleteSql);
+            //====================== End Serialize Product Purchase Return Delete ======================//
+
         }
         $conn->commit();
         echo json_encode('Success');

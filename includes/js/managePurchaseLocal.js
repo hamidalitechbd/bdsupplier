@@ -718,7 +718,6 @@ function deletePurchase(id){
                 processData: false,
                 dataType: "json",
                 success: function(result) {
-                    alert(JSON.stringify(result));
                     if (result == "Success") {
                         
                     } else {
